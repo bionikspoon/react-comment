@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.css","MyComponent.css"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;ACJA;AACA;AACA","file":"all.css","sourcesContent":[".MyComponent2 {\n  color: blue; }\n\n\n/*# sourceMappingURL=app.css.map */",".MyComponent {\n    color: red;\n}"],"sourceRoot":"/source/"}

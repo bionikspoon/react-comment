@@ -11,4 +11,9 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', function(){
+    return view('index');
+});
+Route::get('tasklist', function(){
+    return view('tasklist');
+});
