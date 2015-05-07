@@ -1,1 +1,1 @@
-# react-comment-box
+# React Comment
