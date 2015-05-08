@@ -17,3 +17,7 @@ Route::get('/', function(){
 Route::get('tasklist', function(){
     return view('tasklist');
 });
+
+Route::get('todo', function(){
+    return view('todo');
+});

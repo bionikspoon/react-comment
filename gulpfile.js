@@ -1,4 +1,7 @@
 var elixir = require('laravel-elixir');
+var browserify = require('laravel-elixir-browserify');
+require('laravel-elixir-livereload');
+
 
 /*
  |--------------------------------------------------------------------------
@@ -12,8 +15,21 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function (mix) {
-    mix.sass('app.scss', 'resources/assets/css/');
-    mix.styles(['app.css', 'MyComponent.css']);
-    mix.browserify('app.js');
+    mix.sass('todo/todo.scss', 'public/css');
+    //mix.styles(['app.css']);
+    //mix.copy('resources/assets/static', 'public/static');
+    browserify.init();
+
+    mix.browserify('todo/app.js', {
+        transform:     ["babelify"],
+        insertGlobals: true,
+        rename:        "todo.js"
+    });
+
+
+
 });
 
+elixir.extend('watchify', function (mix) {
+    mix.livereload();
+});

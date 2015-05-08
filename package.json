@@ -1,10 +1,20 @@
 {
   "private": true,
-  "devDependencies": {
-    "gulp": "^3.8.8",
-    "laravel-elixir": "*",
+  "dependencies": {
+    "es6-promise": "^2.1.1",
+    "es6-symbol": "*",
+    "flux": "*",
+    "object-assign": "^2.0.0",
     "react": "*",
-    "statics-stylesheets": "*",
-    "stylesheets": "*"
-  }
+    "underscore": "*"
+  },
+  "devDependencies": {
+    "babelify": "*",
+    "laravel-elixir": "*",
+    "laravel-elixir-browserify": "*",
+    "laravel-elixir-livereload": "0.0.3",
+    "reactify": "*"
+  },
+  "staticRoot": "./static/",
+  "staticPlugin": "statics-stylesheets"
 }
