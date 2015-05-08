@@ -1,0 +1,21 @@
+{
+  "name": "react-comment",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bionikspoon/react-comment",
+  "authors": [
+    "Manu <bionikspoon@gmail.com>"
+  ],
+  "moduleType": [
+    "es6",
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "directory": "vendor/bower_components"
+}

@@ -14,10 +14,19 @@
 Route::get('/', function(){
     return view('index');
 });
+
 Route::get('tasklist', function(){
     return view('tasklist');
 });
 
 Route::get('todo', function(){
     return view('todo');
+});
+
+Route::get('search-box', function(){
+    return view('search-box');
+});
+
+Route::get('twitter-feed', function(){
+    return view('twitter-feed');
 });

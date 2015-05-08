@@ -16,20 +16,28 @@ require('laravel-elixir-livereload');
 
 elixir(function (mix) {
     mix.sass('todo/todo.scss', 'public/css');
-    //mix.styles(['app.css']);
-    //mix.copy('resources/assets/static', 'public/static');
+
     browserify.init();
 
-    mix.browserify('todo/app.js', {
+    mix.browserify('search-box/app.react.js', {
         transform:     ["babelify"],
-        insertGlobals: true,
-        rename:        "todo.js"
+        rename:        "search-box.js",
+        debug:         true,
+        insertGlobals: true
+    }).browserify('todo/app.js', {
+        transform:     ["babelify"],
+        rename:        "todo.js",
+        debug:         true,
+        insertGlobals: true
+    }).browserify('twitter-feed/app.js', {
+        transform:     ["babelify"],
+        rename:        "twitter-feed.js",
+        debug:         true,
+        insertGlobals: true
     });
-
-
-
-});
-
-elixir.extend('watchify', function (mix) {
     mix.livereload();
+
+
 });
+
+
