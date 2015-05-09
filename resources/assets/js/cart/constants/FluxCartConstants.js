@@ -1,19 +1,10 @@
-import keyMirror from 'react/lib/keyMirror';
+var keyMirror = require('react/lib/keyMirror');
 
-export default {
-
-    ActionTypes: keyMirror({
-        CART_ADD:       null,
-        CART_REMOVE:    null,
-        CART_VISIBLE:   null,
-        SET_SELECTED:   null,
-        RECEIVE_DATA:   null,
-        SELECT_PRODUCT: null
-    }),
-
-    ActionSources: keyMirror({
-        SERVER_ACTION: null,
-        VIEW_ACTION:   null
-    })
-
-};
+// Define action constants
+module.exports = keyMirror({
+    CART_ADD: null,       // Adds item to cart
+    CART_REMOVE: null,    // Remove item from cart
+    CART_VISIBLE: null,   // Shows or hides the cart
+    SET_SELECTED: null,   // Selects a product option
+    RECEIVE_DATA: null    // Loads our mock data
+});

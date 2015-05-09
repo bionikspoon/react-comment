@@ -1,83 +1,105 @@
-import AppDispatcher from '../dispatchers/AppDispatcher';
-import Constants from '../constants/FluxCartConstants';
-import BaseStore from './BaseStore';
-import assign from 'object-assign';
-import _ from 'underscore';
+var AppDispatcher = require('../dispatchers/AppDispatcher');
+var EventEmitter = require('events').EventEmitter;
+var FluxCartConstants = require('../constants/FluxCartConstants');
+var _ = require('underscore');
 
-class CartStore extends BaseStore {
-    constructor() {
-        super();
+// Define initial data points
+var _products = {}, _cartVisible = false;
 
-        this._products = {};
-        this._cartVisibility = false;
+// Add product to cart
+function add(sku, update) {
+    update.quantity = sku in _products ? _products[sku].quantity + 1 : 1;
+    _products[sku] = _.extend({}, _products[sku], update)
+}
 
-        this.addProductToCart = this.addProductToCart.bind(this);
-        this.removeItemFromCart = this.removeItemFromCart.bind(this);
-    }
+// Set cart visibility
+function setCartVisible(cartVisible) {
+    _cartVisible = cartVisible;
+}
 
-    addProductToCart(sku, update) {
-        if (sku in this._products) {
-            update.quantity = this._products[sku].quantity + 1;
-        } else {update.quantity = 1;}
-        this._products[sku] = _.extend({}, this._products[sku], update)
-    }
+// Remove item from cart
+function removeItem(sku) {
+    delete _products[sku];
+}
 
-    removeItemFromCart(sku) {
-        delete this._products[sku];
-    }
+// Extend Cart Store with EventEmitter to add eventing capabilities
+var CartStore = _.extend({}, EventEmitter.prototype, {
 
-    get cartVisibility() {
-        return this._cartVisibility;
+    // Return cart items
+    getCartItems: function() {
+        return _products;
+    },
 
-    }
+    // Return # of items in cart
+    getCartCount: function() {
+        return Object.keys(_products).length;
+    },
 
-    set cartVisibility(cartVisibility) {
-        this._cartVisibility = cartVisibility;
-    }
-
-    get cartItems() {
-        return this._products;
-    }
-
-    get cartCount() {
-        return Object.keys(this._products).length;
-    }
-
-    get cartTotal() {
-        let total = 0;
-        let product;
-
-        for (product in this._products) {
-            if (this._products.hasOwnProperty(product)) {
-                total += this._products[product].price
-                    * this._products[product].quantity;
+    // Return cart cost total
+    getCartTotal: function() {
+        var total = 0;
+        var product;
+        for(product in _products){
+            if(_products.hasOwnProperty(product)){
+                total += _products[product].price * _products[product].quantity;
             }
         }
         return total.toFixed(2);
+    },
+
+    // Return cart visibility state
+    getCartVisible: function() {
+        return _cartVisible;
+    },
+
+    // Emit Change event
+    emitChange: function() {
+        this.emit('change');
+    },
+
+    // Add change listener
+    addChangeListener: function(callback) {
+        this.on('change', callback);
+    },
+
+    // Remove change listener
+    removeChangeListener: function(callback) {
+        this.removeListener('change', callback);
     }
 
+});
 
-    _registerCallback(payload) {
-        var action = payload.action;
+// Register callback with AppDispatcher
+AppDispatcher.register(function(payload) {
+    var action = payload.action;
+    var text;
 
-        switch (action.actionType) {
-            case Constants.CART_ADD:
-                this.addProductToCart(action.sku, action.update);
-                break;
+    switch(action.actionType) {
 
-            case Constants.CART_VISIBLE:
-                this.cartVisibility = action.cartVisibility;
-                break;
+        // Respond to CART_ADD action
+        case FluxCartConstants.CART_ADD:
+            add(action.sku, action.update);
+            break;
 
-            case Constants.CART_REMOVE:
-                this.removeItemFromCart(action.sku);
-                break;
+        // Respond to CART_VISIBLE action
+        case FluxCartConstants.CART_VISIBLE:
+            setCartVisible(action.cartVisible);
+            break;
 
-            default:
-                return true;
-        }
-        return super._registerCallback();
+        // Respond to CART_REMOVE action
+        case FluxCartConstants.CART_REMOVE:
+            removeItem(action.sku);
+            break;
+
+        default:
+            return true;
     }
-}
 
-export default new CartStore();
+    // If action was responded to, emit change event
+    CartStore.emitChange();
+
+    return true;
+
+});
+
+module.exports = CartStore;
