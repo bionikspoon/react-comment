@@ -11,22 +11,32 @@
 |
 */
 
-Route::get('/', function(){
-    return view('index');
-});
+Route::get('/',
+    function () {
+        return view('index');
+    });
 
-Route::get('tasklist', function(){
-    return view('tasklist');
-});
+Route::get('tasklist',
+    function () {
+        return view('tasklist');
+    });
 
-Route::get('todo', function(){
-    return view('todo');
-});
+Route::get('todo',
+    function () {
+        return view('todo');
+    });
 
-Route::get('search-box', function(){
-    return view('search-box');
-});
+Route::get('search-box',
+    function () {
+        return view('search-box');
+    });
 
-Route::get('twitter-feed', function(){
-    return view('twitter-feed');
-});
+Route::get('twitter-feed',
+    function () {
+        return view('twitter-feed');
+    });
+
+Route::get('cart',
+    function () {
+        return view('cart');
+    });

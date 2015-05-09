@@ -1,8 +1,8 @@
-var Footer = require('./Footer.react.js');
-var Header = require('./Header.react.js');
-var MainSection = require('./MainSection.react.js');
+import Footer from './Footer.react.js';
+import Header from './Header.react.js';
+import MainSection from './MainSection.react.js';
 import React from'react';
-var TodoStore = require('../stores/TodoStore');
+import TodoStore from '../stores/TodoStore';
 
 function getTodoState() {
     return {
@@ -29,10 +29,8 @@ export default React.createClass({
         return (
             <div>
                 <Header />
-                <MainSection
-                    allTodos={this.state.allTodos}
-                    areAllComplete={this.state.areAllComplete}
-                />
+                <MainSection allTodos={this.state.allTodos}
+                             areAllComplete={this.state.areAllComplete} />
                 <Footer allTodos={this.state.allTodos} />
             </div>
         );

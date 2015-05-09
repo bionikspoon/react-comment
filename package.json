@@ -6,14 +6,17 @@
     "flux":          "*",
     "object-assign": "^2.0.0",
     "react":         "*",
-    "underscore":    "*"
+    "underscore":    "*",
+    "react-bootstrap": "*"
   },
   "devDependencies": {
     "babelify":                  "*",
     "laravel-elixir":            "*",
     "laravel-elixir-browserify": "*",
     "laravel-elixir-livereload": "0.0.3",
-    "reactify":                  "*"
+    "reactify":                  "*",
+    "envify":                    "~3.0.0",
+    "react":                     "^0.12.0"
   },
   "staticRoot":      "./static/",
   "staticPlugin":    "statics-stylesheets"

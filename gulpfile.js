@@ -19,18 +19,22 @@ elixir(function (mix) {
 
     browserify.init();
 
-    mix.browserify('search-box/app.react.js', {
-        transform:     ["babelify"],
+    mix.browserify('cart/app.js', {
+        transform:     ['babelify'],
+        rename:        "cart.js",
+        debug:         true
+    }).browserify('search-box/app.react.js', {
+        transform:     ['babelify'],
         rename:        "search-box.js",
         debug:         true,
         insertGlobals: true
     }).browserify('todo/app.js', {
-        transform:     ["babelify"],
+        transform:     [ 'babelify'],
         rename:        "todo.js",
         debug:         true,
         insertGlobals: true
     }).browserify('twitter-feed/app.js', {
-        transform:     ["babelify"],
+        transform:     [ 'babelify'],
         rename:        "twitter-feed.js",
         debug:         true,
         insertGlobals: true
