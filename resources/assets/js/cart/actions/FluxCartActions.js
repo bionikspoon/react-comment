@@ -1,50 +1,46 @@
-var AppDispatcher = require('../dispatchers/AppDispatcher');
-var FluxCartConstants = require('../constants/FluxCartConstants');
+'use strict';
 
-// Define actions object
-var FluxCartActions = {
+import AppDispatcher from '../dispatchers/AppDispatcher'
+import Constants from '../constants/FluxCartConstants'
 
-    // Receive inital product data
-    receiveProduct: function(data) {
+
+export default {
+
+    receiveProduct(data) {
         AppDispatcher.handleAction({
-            actionType: FluxCartConstants.RECEIVE_DATA,
-            data: data
+            actionType: Constants.RECEIVE_DATA,
+                        data
+        });
+    },
+
+    selectProduct(data) {
+        AppDispatcher.handleAction({
+            actionType: Constants.SELECT_PRODUCT,
+                        data
+        });
+    },
+
+    addProductToCart(sku, update){
+        AppDispatcher.handleAction({
+            actionType: Constants.CART_ADD,
+                        sku,
+                        update
+        });
+    },
+
+    removeProductFromCart(sku){
+        AppDispatcher.handleAction({
+            actionType: Constants.CART_REMOVE,
+                        sku
         })
     },
 
-    // Set currently selected product variation
-    selectProduct: function(index) {
+    updateCartVisible(cartVisibility){
         AppDispatcher.handleAction({
-            actionType: FluxCartConstants.SELECT_PRODUCT,
-            data: index
-        })
-    },
-
-    // Add item to cart
-    addToCart: function(sku, update) {
-        AppDispatcher.handleAction({
-            actionType: FluxCartConstants.CART_ADD,
-            sku: sku,
-            update: update
-        })
-    },
-
-    // Remove item from cart
-    removeFromCart: function(sku) {
-        AppDispatcher.handleAction({
-            actionType: FluxCartConstants.CART_REMOVE,
-            sku: sku
-        })
-    },
-
-    // Update cart visibility status
-    updateCartVisible: function(cartVisible) {
-        AppDispatcher.handleAction({
-            actionType: FluxCartConstants.CART_VISIBLE,
-            cartVisible: cartVisible
+            actionType: Constants.CART_VISIBLE,
+                        cartVisibility
         })
     }
 
-};
 
-module.exports = FluxCartActions;
+};

@@ -1,16 +1,10 @@
-window.React = require('react');
-var ProductData = require('./ProductData');
-var CartAPI = require('./utils/CartAPI')
-var FluxCartApp = require('./components/FluxCartApp.react');
+import React from'react'
+import FluxCartApp from'./components/FluxCartApp.react'
+import CartAPI from'./utils/CartAPI'
+import ProductData from'./ProductData'
 
-// Load Mock Product Data into localStorage
 ProductData.init();
 
-// Load Mock API Call
 CartAPI.getProductData();
 
-// Render FluxCartApp Controller View
-React.render(
-    <FluxCartApp />,
-    document.getElementById('flux-cart')
-);
+React.render(<FluxCartApp />, document.getElementById('flux-cart'));

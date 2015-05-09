@@ -20,23 +20,31 @@ elixir(function (mix) {
     browserify.init();
 
     mix.browserify('cart/app.js', {
-        transform:     ['babelify'],
+        transform:     [
+            [
+                "babelify",
+                {
+                    stage:             0,
+                    optional:          [
+                        'strict',
+                        'react'
+                    ]
+                }
+            ]
+        ],
         rename:        "cart.js",
-        debug:         true
+        insertGlobals: true
     }).browserify('search-box/app.react.js', {
         transform:     ['babelify'],
         rename:        "search-box.js",
-        debug:         true,
         insertGlobals: true
     }).browserify('todo/app.js', {
-        transform:     [ 'babelify'],
+        transform:     ['babelify'],
         rename:        "todo.js",
-        debug:         true,
         insertGlobals: true
     }).browserify('twitter-feed/app.js', {
-        transform:     [ 'babelify'],
+        transform:     ['babelify'],
         rename:        "twitter-feed.js",
-        debug:         true,
         insertGlobals: true
     });
     mix.livereload();

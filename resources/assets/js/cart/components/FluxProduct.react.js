@@ -5,14 +5,14 @@ var FluxCartActions = require('../actions/FluxCartActions');
 var FluxProduct = React.createClass({
 
     // Add item to cart via Actions
-    addToCart: function(event){
+    addProductToCart: function(event){
         var sku = this.props.selected.sku;
         var update = {
             name: this.props.product.name,
             type: this.props.selected.type,
             price: this.props.selected.price
         }
-        FluxCartActions.addToCart(sku, update);
+        FluxCartActions.addProductToCart(sku, update);
         FluxCartActions.updateCartVisible(true);
     },
 
@@ -40,7 +40,7 @@ var FluxProduct = React.createClass({
                             )
                         })}
                     </select>
-                    <button type="button" onClick={this.addToCart} disabled={ats  > 0 ? '' : 'disabled'}>
+                    <button type="button" onClick={this.addProductToCart} disabled={ats  > 0 ? '' : 'disabled'}>
                         {ats > 0 ? 'Add To Cart' : 'Sold Out'}
                     </button>
                 </div>

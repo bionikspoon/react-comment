@@ -1,14 +1,24 @@
-var Dispatcher = require('flux').Dispatcher;
+'use strict';
 
-// Create dispatcher instance
-var AppDispatcher = new Dispatcher();
+import { Dispatcher } from 'flux';
+import Constants from '../constants/FluxCartConstants';
 
-// Convenience method to handle dispatch requests
-AppDispatcher.handleAction = function(action) {
-    this.dispatch({
-        source: 'VIEW_ACTION',
-        action: action
-    });
+class AppDispatcher extends Dispatcher {
+
+    handleAction(action) {
+        this.dispatch({
+            source: 'VIEW_ACTION',
+                    action
+        });
+    }
+
+    handleViewAction(action) {
+        let payload = {
+            source: Constants.ActionSources.VIEW_ACTION,
+            action: action
+        };
+        this.dispatch(payload);
+    }
 }
 
-module.exports = AppDispatcher;
+export default new AppDispatcher();

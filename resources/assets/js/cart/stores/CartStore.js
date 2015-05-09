@@ -1,105 +1,83 @@
-var AppDispatcher = require('../dispatchers/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var FluxCartConstants = require('../constants/FluxCartConstants');
-var _ = require('underscore');
+import AppDispatcher from '../dispatchers/AppDispatcher';
+import Constants from '../constants/FluxCartConstants';
+import BaseStore from './BaseStore';
+import assign from 'object-assign';
+import _ from 'underscore';
 
-// Define initial data points
-var _products = {}, _cartVisible = false;
+class CartStore extends BaseStore {
+    constructor() {
+        super();
 
-// Add product to cart
-function add(sku, update) {
-    update.quantity = sku in _products ? _products[sku].quantity + 1 : 1;
-    _products[sku] = _.extend({}, _products[sku], update)
-}
+        this._products = {};
+        this._cartVisibility = false;
 
-// Set cart visibility
-function setCartVisible(cartVisible) {
-    _cartVisible = cartVisible;
-}
+        this.addProductToCart = this.addProductToCart.bind(this);
+        this.removeItemFromCart = this.removeItemFromCart.bind(this);
+    }
 
-// Remove item from cart
-function removeItem(sku) {
-    delete _products[sku];
-}
+    addProductToCart(sku, update) {
+        if (sku in this._products) {
+            update.quantity = this._products[sku].quantity + 1;
+        } else {update.quantity = 1;}
+        this._products[sku] = _.extend({}, this._products[sku], update)
+    }
 
-// Extend Cart Store with EventEmitter to add eventing capabilities
-var CartStore = _.extend({}, EventEmitter.prototype, {
+    removeItemFromCart(sku) {
+        delete this._products[sku];
+    }
 
-    // Return cart items
-    getCartItems: function() {
-        return _products;
-    },
+    get cartVisibility() {
+        return this._cartVisibility;
 
-    // Return # of items in cart
-    getCartCount: function() {
-        return Object.keys(_products).length;
-    },
+    }
 
-    // Return cart cost total
-    getCartTotal: function() {
-        var total = 0;
-        var product;
-        for(product in _products){
-            if(_products.hasOwnProperty(product)){
-                total += _products[product].price * _products[product].quantity;
+    set cartVisibility(cartVisibility) {
+        this._cartVisibility = cartVisibility;
+    }
+
+    get cartItems() {
+        return this._products;
+    }
+
+    get cartCount() {
+        return Object.keys(this._products).length;
+    }
+
+    get cartTotal() {
+        let total = 0;
+        let product;
+
+        for (product in this._products) {
+            if (this._products.hasOwnProperty(product)) {
+                total += this._products[product].price
+                    * this._products[product].quantity;
             }
         }
         return total.toFixed(2);
-    },
-
-    // Return cart visibility state
-    getCartVisible: function() {
-        return _cartVisible;
-    },
-
-    // Emit Change event
-    emitChange: function() {
-        this.emit('change');
-    },
-
-    // Add change listener
-    addChangeListener: function(callback) {
-        this.on('change', callback);
-    },
-
-    // Remove change listener
-    removeChangeListener: function(callback) {
-        this.removeListener('change', callback);
     }
 
-});
 
-// Register callback with AppDispatcher
-AppDispatcher.register(function(payload) {
-    var action = payload.action;
-    var text;
+    _registerCallback(payload) {
+        var action = payload.action;
 
-    switch(action.actionType) {
+        switch (action.actionType) {
+            case Constants.CART_ADD:
+                this.addProductToCart(action.sku, action.update);
+                break;
 
-        // Respond to CART_ADD action
-        case FluxCartConstants.CART_ADD:
-            add(action.sku, action.update);
-            break;
+            case Constants.CART_VISIBLE:
+                this.cartVisibility = action.cartVisibility;
+                break;
 
-        // Respond to CART_VISIBLE action
-        case FluxCartConstants.CART_VISIBLE:
-            setCartVisible(action.cartVisible);
-            break;
+            case Constants.CART_REMOVE:
+                this.removeItemFromCart(action.sku);
+                break;
 
-        // Respond to CART_REMOVE action
-        case FluxCartConstants.CART_REMOVE:
-            removeItem(action.sku);
-            break;
-
-        default:
-            return true;
+            default:
+                return true;
+        }
+        return super._registerCallback();
     }
+}
 
-    // If action was responded to, emit change event
-    CartStore.emitChange();
-
-    return true;
-
-});
-
-module.exports = CartStore;
+export default new CartStore();
